@@ -1,91 +1,33 @@
 package com.example.dish.entity;
 
+import lombok.Data;
 
+import javax.persistence.*;
+
+@Data
+@Entity
+@Table(name = "dish")
 public class Dish
 {
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @Column(name = "id")
     private Integer id;
 
+    @Column(name = "dishname")
     private String dishName;
 
+    @Column(name = "dishprice")
     private Double dishPrice;
 
+    @Column(name = "dishtaste")
     private String taste;
 
+    @Column(name = "dishtype")
     private String dishType;
 
+    @Column(name = "dishlocation")
     private String location;
 
-    //这里应该还有一个comment的实体，和Dish实体类保持一对一关系
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
-
-    public String getDishName()
-    {
-        return dishName;
-    }
-
-    public void setDishName(String dishName)
-    {
-        this.dishName = dishName;
-    }
-
-    public Double getDishPrice()
-    {
-        return dishPrice;
-    }
-
-    public void setDishPrice(Double dishPrice)
-    {
-        this.dishPrice = dishPrice;
-    }
-
-    public String getTaste()
-    {
-        return taste;
-    }
-
-    public void setTaste(String taste)
-    {
-        this.taste = taste;
-    }
-
-    public String getDishType() {
-        return dishType;
-    }
-
-    public void setDishType(String dishType) {
-        this.dishType = dishType;
-    }
-
-    public String getLocation()
-    {
-        return location;
-    }
-
-    public void setLocation(String location)
-    {
-        this.location = location;
-    }
-
-    public Dish()
-    {
-
-    }
-
-    public Dish(Integer id, String dishName, Double dishPrice, String taste, String dishType, String location) {
-        this.id = id;
-        this.dishName = dishName;
-        this.dishPrice = dishPrice;
-        this.taste = taste;
-        this.dishType = dishType;
-        this.location = location;
-    }
+    //这里应该还有一个comment的实体，和Dish实体类保持一对一关系。
 }

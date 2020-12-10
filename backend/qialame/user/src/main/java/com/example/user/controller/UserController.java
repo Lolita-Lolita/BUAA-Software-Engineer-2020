@@ -12,10 +12,17 @@ public class UserController
     @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping("/showDish")
-    public Dish showDish()
+    @RequestMapping("/id")
+    public Dish ByID()
     {
-        Dish dish = restTemplate.getForObject("http://dish/getDish",Dish.class);
+        Dish dish = restTemplate.getForObject("http://dish/id",Dish.class);
+        return dish;
+    }
+
+    @RequestMapping("/name")
+    public Dish ByName()
+    {
+        Dish dish = restTemplate.getForObject("http://dish/name",Dish.class);
         return dish;
     }
 }
