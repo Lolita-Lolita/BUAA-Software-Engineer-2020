@@ -1,95 +1,90 @@
-# 恰了吗Frontend
+# vue-admin-template
 
-## 说明
+English | [简体中文](./README-zh.md)
 
-可以使用npm也可以使用pnpm。
+> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
+
+**Live demo:** http://panjiachen.github.io/vue-admin-template
 
 
+**The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
 
-安装依赖。
+## Build Setup
 
-```
+```bash
+# clone the project
+git clone https://github.com/PanJiaChen/vue-admin-template.git
+
+# enter the project directory
+cd vue-admin-template
+
+# install dependency
 npm install
-# 若无法联网/网速慢，可以配置代理或使用淘宝源
+
+# develop
+npm run dev
 ```
 
-vue的可视化界面
+This will automatically open http://localhost:9528
 
-```
-vue ui
+## Build
 
-#若未安装vue
-npm install -g @vue/cli
-```
+```bash
+# build for test environment
+npm run build:stage
 
-
-
-其实下面的操作都可以在vue ui里完成：
-
-使用`npm run serve`来打开支持热加载的开发环境页面。
-
-```
-npm run serve
+# build for production environment
+npm run build:prod
 ```
 
-使用`npm run build`来编译生产环境。
+## Advanced
 
-```
-npm run serve
-```
+```bash
+# preview the release environment effect
+npm run preview
 
-单元测试
+# preview the release environment effect + static resource analysis
+npm run preview -- --report
 
-```
-pnpm run test:unit
-```
-
-端到端测试
-
-```
-pnpm run test:e2e
-```
-
-Lint
-
-```
+# code format check
 npm run lint
+
+# code format check and auto fix
+npm run lint -- --fix
 ```
 
-___
+Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
 
-pnpm使用方法差不多
+## Demo
 
-## Project setup
+![demo](https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif)
 
-```
-pnpm install
-```
+## Extra
 
-### Compiles and hot-reloads for development
-```
-pnpm run serve
-```
+If you want router permission && generate menu by user roles , you can use this branch [permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
 
-### Compiles and minifies for production
-```
-pnpm run build
-```
+For `typescript` version, you can use [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
 
-### Run your unit tests
-```
-pnpm run test:unit
-```
+## Related Project
 
-### Run your end-to-end tests
-```
-pnpm run test:e2e
-```
+- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 
-### Lints and fixes files
-```
-pnpm run lint
-```
+- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
+
+- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
+
+## Browsers support
+
+Modern browsers and Internet Explorer 10+.
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
+| --------- | --------- | --------- | --------- |
+| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
+
+## License
+
+[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
+
+Copyright (c) 2017-present PanJiaChen
