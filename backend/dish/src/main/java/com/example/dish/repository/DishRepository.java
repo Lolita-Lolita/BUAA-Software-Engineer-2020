@@ -23,6 +23,4 @@ public interface DishRepository extends JpaRepository<Dish,Integer>
 
     //下列方法供后台使用之。
 
-    //增加
-
 }

@@ -7,16 +7,14 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-import java.awt.print.Pageable;
-
 @SpringBootApplication
 @EnableEurekaClient
-public class UserApplication
+public class RBACApplication
 {
 
 	public static void main(String[] args)
 	{
-		SpringApplication.run(UserApplication.class, args);
+		SpringApplication.run(RBACApplication.class, args);
 	}
 
 	@Bean

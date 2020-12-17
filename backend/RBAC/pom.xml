@@ -8,8 +8,8 @@
 		<version>2.2.7.RELEASE</version>
 	</parent>
 	<groupId>com.qialame</groupId>
-	<artifactId>user</artifactId>
-	<name>user</name>
+	<artifactId>RBAC</artifactId>
+	<name>RBAC</name>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -23,6 +23,14 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
 	</dependencies>
