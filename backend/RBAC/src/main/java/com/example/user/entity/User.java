@@ -21,12 +21,6 @@ public class User {
     @Column(name = "passwd")
     private String password;
 
-    @Column(name = "status")
-    private Boolean userStatus;
-
-    @Column(name = "create_time")
-    private Timestamp user_CreateTime;
-
-    @Column(name = "update_time")
-    private Timestamp user_UpdateTime;
+    @Column(name = "role")
+    private String role;
 }
