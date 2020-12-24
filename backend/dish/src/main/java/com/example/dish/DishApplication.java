@@ -14,5 +14,4 @@ public class DishApplication
 	{
 		SpringApplication.run(DishApplication.class, args);
 	}
-
 }
