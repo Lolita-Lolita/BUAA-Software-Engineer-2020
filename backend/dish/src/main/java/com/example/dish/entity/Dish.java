@@ -1,14 +1,20 @@
 package com.example.dish.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "dish")
 public class Dish {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private Integer id;
@@ -28,5 +34,4 @@ public class Dish {
     @Column(name = "dishlocation")
     private String location;
 
-    //这里应该还有一个comment的实体，和Dish实体类保持一对一关系。
 }

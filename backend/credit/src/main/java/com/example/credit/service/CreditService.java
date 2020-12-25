@@ -5,6 +5,7 @@ import com.example.credit.repository.CreditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +23,18 @@ public class CreditService {
         return creditRepository.findByDishID(did);
     }
 
+    public Credit setCredit(Credit credit) {
+
+        credit.setAverageCredit((credit.getLookCredit() + credit.getSmellCredit() + credit.getTasteCredit())/3.0);
+
+        return creditRepository.save(credit);
+    }
+
     public Double CalAverageCredit(List<Credit> credits) {
         Double averageCredit = CalAverageLookCredit(credits)
                 +CalAverageSmellCredit(credits)
                 +CalAverageTasteCredit(credits);
+        averageCredit /= 3;
         return averageCredit;
     }
 
@@ -55,4 +64,6 @@ public class CreditService {
         averageTasteCredit /= credits.size();
         return averageTasteCredit;
     }
+
+
 }
