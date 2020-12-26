@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.demo.config.SecurityConfiguration
+
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.demo.config.environment.AuthEnvironmentPostProcessor
