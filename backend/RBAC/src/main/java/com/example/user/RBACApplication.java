@@ -17,10 +17,4 @@ public class RBACApplication
 		SpringApplication.run(RBACApplication.class, args);
 	}
 
-	@Bean
-	@LoadBalanced
-	public RestTemplate getRestTemplate()
-	{
-		return new RestTemplate();
-	}
 }

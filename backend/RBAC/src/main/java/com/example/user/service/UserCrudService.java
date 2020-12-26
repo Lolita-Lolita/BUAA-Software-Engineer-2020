@@ -1,6 +1,6 @@
 package com.example.user.service;
 
-import com.example.user.entity.UserList;
+import com.example.user.entity.UserCrud;
 import com.example.user.repository.UserCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,15 +14,15 @@ public class UserCrudService {
     @Autowired
     private UserCrudRepository userCrudRepository;
 
-    public Optional<UserList> findById(Integer id) {
+    public Optional<UserCrud> findById(Integer id) {
         return userCrudRepository.findById(id);
     }
 
-    public List<UserList> findByUserNameLike(String name) {
+    public List<UserCrud> findByUserNameLike(String name) {
         return userCrudRepository.findByUserNameLike(name);
     }
 
-    public List<UserList> findByRoleLike(String role) {
+    public List<UserCrud> findByRoleLike(String role) {
         return userCrudRepository.findByRoleLike(role);
     }
 
@@ -30,7 +30,7 @@ public class UserCrudService {
         userCrudRepository.deleteById(id);
     }
 
-    public UserList save(UserList userList) {
-        return userCrudRepository.save(userList);
+    public UserCrud save(UserCrud userCrud) {
+        return userCrudRepository.save(userCrud);
     }
 }

@@ -1,14 +1,14 @@
 package com.example.user.repository;
 
-import com.example.user.entity.UserList;
+import com.example.user.entity.UserCrud;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface UserCrudRepository extends JpaRepository<UserList,Integer> {
+public interface UserCrudRepository extends JpaRepository<UserCrud,Integer> {
 
-    List<UserList> findByUserNameLike(String name);
+    List<UserCrud> findByUserNameLike(String name);
 
-    List<UserList> findByRoleLike(String role);
+    List<UserCrud> findByRoleLike(String role);
 
 }

@@ -70,7 +70,7 @@ public class DishController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Dish> save(@RequestBody Dish dish) {
+    public ResponseEntity<Dish> save(Dish dish) {
         return ResponseEntity.ok(dishService.save(dish));
     }
 
