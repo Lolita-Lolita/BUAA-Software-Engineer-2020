@@ -3,7 +3,6 @@ package com.example.dish.service;
 import com.example.dish.controller.params.DishSearchParams;
 import com.example.dish.entity.Dish;
 import com.example.dish.repository.DishRepository;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
