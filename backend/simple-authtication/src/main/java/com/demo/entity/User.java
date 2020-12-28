@@ -12,17 +12,17 @@ import lombok.Data;
  * User Entity，作为数据库 t_sys_user 的映射，表名和属性均可以自定义，以下仅仅为例子
  */
 @Entity
-@Table(name = "t_sys_user")
+@Table(name = "user")
 public @Data class User {
 	
 	@Id
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "username")
+	@Column(name = "name")
 	private String username;
 	
-	@Column(name = "password")
+	@Column(name = "passwd")
 	private String password;
 	
 	@Column(name = "role")

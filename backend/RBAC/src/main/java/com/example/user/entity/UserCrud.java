@@ -1,5 +1,6 @@
 package com.example.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class UserCrud {
     private Integer id;
 
     @Column(name = "name")
+    @JsonProperty(value = "username")
     private String userName;
 
     @Column(name = "passwd")
