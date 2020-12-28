@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CreditService {
+public strictfp class CreditService {
 
     @Autowired
     private CreditRepository creditRepository;
@@ -24,13 +24,11 @@ public class CreditService {
     }
 
     public Credit setCredit(Credit credit) {
-
         credit.setAverageCredit((credit.getLookCredit() + credit.getSmellCredit() + credit.getTasteCredit())/3.0);
-
         return creditRepository.save(credit);
     }
 
-    public Double CalAverageCredit(List<Credit> credits) {
+    public  Double CalAverageCredit(List<Credit> credits) {
         Double averageCredit = CalAverageLookCredit(credits)
                 +CalAverageSmellCredit(credits)
                 +CalAverageTasteCredit(credits);

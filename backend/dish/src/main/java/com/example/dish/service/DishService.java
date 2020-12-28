@@ -78,6 +78,7 @@ public class DishService
                 builder = new StringBuilder();
                 String condition = builder.append("(").append(temp).append(")").toString();
                 Expression<Boolean> re = criteriaBuilder.function("regexp_like", Boolean.class, root.get("dishType"),criteriaBuilder.literal(condition));
+                predicates.add(criteriaBuilder.isTrue(re));
             }
 
             if (Objects.nonNull(param.getLocation())) {
@@ -88,6 +89,7 @@ public class DishService
                 builder = new StringBuilder();
                 String condition = builder.append("(").append(temp).append(")").toString();
                 Expression<Boolean> re = criteriaBuilder.function("regexp_like", Boolean.class, root.get("location"), criteriaBuilder.literal(condition));
+                predicates.add(criteriaBuilder.isTrue(re));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
