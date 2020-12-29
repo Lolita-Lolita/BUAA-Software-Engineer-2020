@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableEurekaClient
 @SpringBootApplication
+@EnableSwagger2
 @EnableBinding(RabbitMQConfiguration.class)
 public class DishApplication
 {
