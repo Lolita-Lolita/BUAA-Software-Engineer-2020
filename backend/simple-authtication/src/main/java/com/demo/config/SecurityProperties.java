@@ -14,6 +14,7 @@ public @Data class SecurityProperties {
     private Filter filter = new Filter();
     private boolean autoScan = true;
     private String[] sysPath = new String[0];
+    private String[] whiteList = new String[0];
 
     public @Data static class Filter {
         private boolean enable = true;

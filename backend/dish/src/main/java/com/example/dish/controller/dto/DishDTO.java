@@ -16,4 +16,6 @@ public class DishDTO {
     private String dishType;
 
     private String location;
+
+    private CreditDTO credit;
 }

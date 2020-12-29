@@ -3,19 +3,29 @@ package com.example.dish.controller;
 import com.demo.config.annotation.Authority;
 import com.demo.entity.User;
 import com.demo.repository.UserRepository;
+import com.example.dish.controller.dto.CreditDTO;
+import com.example.dish.controller.dto.DishDTO;
 import com.example.dish.controller.params.DishSearchParams;
 import com.example.dish.entity.Dish;
 import com.example.dish.service.DishService;
+import com.netflix.discovery.converters.Auto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +36,8 @@ public class DishController {
     private DishService dishService;
     @Autowired(required = false)
     private  UserRepository userRepository;
+    @Autowired
+    private RestTemplate restTemplate;
 
     /*
     private static Logger logger= LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
@@ -100,6 +112,24 @@ public class DishController {
         System.out.println(user);
     }
 
+    @GetMapping("/credit/{id}")
+    public ResponseEntity<DishDTO> findDishAndCreditById(@PathVariable("id") Integer id) {
+        Dish dish = dishService.findById(id).orElseThrow(() -> new IllegalArgumentException("未找到对应的菜品!"));
+        DishDTO dto = new DishDTO();
+        BeanUtils.copyProperties(dish, dto, "credit");
+        RequestEntity<?> entity = RequestEntity.get(UriComponentsBuilder.fromHttpUrl("http://credit/credit/get-averageCredit/{dishID}").build(dto.getId()))
+                                               .headers(header -> header.add("service-id", "dish"))
+                                               .build();
+        CreditDTO credit = restTemplate.exchange(entity, CreditDTO.class).getBody();
+        dto.setCredit(credit);
+        return ResponseEntity.ok(dto);
+    }
 
-
+    /*
+    @PostMapping("/credit/setCredit/{id}")
+    public ResponseEntity<DishDTO> setCreditByID(@PathVariable("id") Integer id) {
+        DishDTO dto = new DishDTO();
+        BeanUtils.cop;
+    }
+    */
 }
