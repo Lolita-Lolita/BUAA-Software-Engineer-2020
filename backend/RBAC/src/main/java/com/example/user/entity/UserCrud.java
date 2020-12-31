@@ -20,7 +20,7 @@ public class UserCrud {
     private String userName;
 
     @Column(name = "passwd")
-    private String password;
+    private String passWord;
 
     @Column(name = "role")
     private String role;

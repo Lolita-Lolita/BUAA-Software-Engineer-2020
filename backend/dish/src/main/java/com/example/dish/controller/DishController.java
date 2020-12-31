@@ -112,6 +112,7 @@ public class DishController {
         System.out.println(user);
     }
 
+    @PreAuthorize("hasRole('user') or hasRole('admin')")
     @GetMapping("/credit/{id}")
     public ResponseEntity<DishDTO> findDishAndCreditById(@PathVariable("id") Integer id) {
         Dish dish = dishService.findById(id).orElseThrow(() -> new IllegalArgumentException("未找到对应的菜品!"));

@@ -65,6 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(properties.getSysPath()).permitAll()
 				.anyRequest().authenticated()
 			.and().formLogin().permitAll()
+				.usernameParameter("userName")
 				.successHandler(login)
 				.failureHandler(login)
 			.and().logout().permitAll()
