@@ -1,6 +1,10 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+  <div>
+    <div class="dashboard-container">
+      <div class="dashboard-text">name: {{ name }}</div>
+    </div>
+    <div class="background" :style="backgroundStyle">
+    </div>
   </div>
 </template>
 
@@ -13,7 +17,16 @@ export default {
     ...mapGetters([
       'name'
     ])
-  }
+  },
+  data() {
+    return {
+      backgroundStyle: {
+            backgroundImage:'url(' + require('@/assets/background.png') + ')',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'cover',
+      }
+    }
+  },
 }
 </script>
 
@@ -26,5 +39,13 @@ export default {
     font-size: 30px;
     line-height: 46px;
   }
+}
+.background{
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  height: 420px;
+  width: 300px;
+  opacity: 0.5;
 }
 </style>
