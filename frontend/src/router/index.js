@@ -84,7 +84,7 @@ export const constantRoutes = [
       {
         path: 'index',
         name: 'List',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/table/index'),
         meta: { title: '菜品列表', icon: 'table' }
       }
     ]
