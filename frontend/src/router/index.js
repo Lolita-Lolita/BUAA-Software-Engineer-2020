@@ -91,6 +91,20 @@ export const constantRoutes = [
   },
 
   {
+    path: '/User',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'User',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'tree' }
+      }
+    ]
+  },
+  
+
+  {
     path: '/form',
     component: Layout,
     children: [
@@ -102,6 +116,19 @@ export const constantRoutes = [
       }
     ]
   },
+
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'Form', icon: 'form' }
+  //     }
+  //   ]
+  // },
 
   {
     path: '/nested',

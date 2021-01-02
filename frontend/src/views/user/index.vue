@@ -1,0 +1,125 @@
+<template>
+  <div class="app-container">
+    <el-table
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      @sort-change="sortChange"
+    >
+      <el-table-column align="center" label="ID" width="95">
+        <template slot-scope="scope">
+          {{ scope.$index }}
+        </template>
+      </el-table-column>
+      <el-table-column label="用户名">
+        <template slot-scope="scope">
+          {{ scope.row.title }}
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="作者" width="110" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.author }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="口味" width="110" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.pageviews }}
+        </template>
+      </el-table-column> -->
+      <!-- <el-table-column label="位置" width="110" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.pageviews }}
+        </template>
+      </el-table-column> -->
+      <el-table-column class-name="status-col" label="权限" width="110" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="220" class-name="small-padding fixed-width">
+        <template slot-scope="{row,$index}">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            Edit
+          </el-button>
+          <el-button type="danger" size="mini" @click="handleUpdate(row)">
+            Delete
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+  </div>
+</template>
+
+<script>
+  import { getList } from '@/api/user'
+  export default {
+    filters: {
+      statusFilter(status) {
+        const statusMap = {
+          published: 'success',
+          draft: 'gray',
+          deleted: 'danger'
+        }
+        return statusMap[status]
+      }
+    },
+    data() {
+      return {
+        tableKey: 0,
+        list: null,
+        total: 0,
+        listLoading: true,
+        listQuery: {
+          page: 1,
+          limit: 20,
+          importance: undefined,
+          title: undefined,
+          type: undefined,
+          sort: '+id'
+        },
+        importanceOptions: [1, 2, 3],
+        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+        statusOptions: ['published', 'draft', 'deleted'],
+        showReviewer: false,
+        temp: {
+          id: undefined,
+          importance: 1,
+          remark: '',
+          timestamp: new Date(),
+          title: '',
+          type: '',
+          status: 'published'
+        },
+        dialogFormVisible: false,
+        dialogStatus: '',
+        textMap: {
+          update: 'Edit',
+          create: 'Create'
+        },
+        dialogPvVisible: false,
+        pvData: [],
+      }
+    },
+    created() {
+      this.fetchData()
+    },
+    methods: {
+      fetchData() {
+        this.listLoading = true
+        getList().then(response => {
+          this.list = response.data.items
+          this.listLoading = false
+        })
+      },
+      handleFilter() {
+        this.listQuery.page = 1
+        this.getList()
+      },
+    }
+  }
+</script>
