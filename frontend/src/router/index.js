@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '恰了吗', icon: 'sun' }
     }]
   },
 
@@ -78,11 +78,31 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example/table',
-    name: 'Table',
-    component: () => import('@/views/table/index'),
-    meta: { title: '菜品列表', icon: 'table' }
+    path: '/list',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'List',
+        component: () => import('@/views/table/index'),
+        meta: { title: '菜品列表', icon: 'table' }
+      }
+    ]
   },
+
+  {
+    path: '/User',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'User',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'tree' }
+      }
+    ]
+  },
+  
 
   {
     path: '/form',
@@ -96,6 +116,19 @@ export const constantRoutes = [
       }
     ]
   },
+
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'Form', icon: 'form' }
+  //     }
+  //   ]
+  // },
 
   {
     path: '/nested',
@@ -156,16 +189,16 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+  //       meta: { title: 'External Link', icon: 'link' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
