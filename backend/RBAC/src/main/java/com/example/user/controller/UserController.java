@@ -50,4 +50,10 @@ public class UserController
     public ResponseEntity<UserCrud> save(UserCrud userCrud) {
         return ResponseEntity.ok(userService.save(userCrud));
     }
+
+    @PreAuthorize("hasRole('admin')")
+    @GetMapping("/findAll")
+    public ResponseEntity<List<UserCrud>> findAll(){
+        return ResponseEntity.ok(userService.findAll());
+    }
 }

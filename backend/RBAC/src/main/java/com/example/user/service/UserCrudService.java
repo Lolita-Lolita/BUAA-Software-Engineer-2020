@@ -54,4 +54,8 @@ public class UserCrudService {
         user.send(MessageBuilder.createMessage(userCrud, headers));
         return userCrud;
     }
+
+    public List<UserCrud> findAll() {
+        return userCrudRepository.findAll();
+    }
 }
