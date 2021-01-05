@@ -29,6 +29,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { userLogout } from '@/api/user'
 
 export default {
   components: {
@@ -38,7 +39,7 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar',
+      'avatar'
     ])
   },
   methods: {
@@ -47,10 +48,11 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
+      await userLogout()
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
     getAvator(icon) {
-      return require("@/icons/"+icon);
+      return require('@/icons/' + icon)
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title"><span style="color:#409eff">登录</span> / <span style="color:#e6a23c">注册</span></h3>
       </div>
 
       <el-form-item prop="username">
@@ -41,12 +41,14 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:45%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
-      <div class="tips">
+      <el-button :loading="loading" type="warning" style="width:45%;margin-bottom:30px;float:right;" @click.native.prevent="handleRegister">注册</el-button>
+
+      <!-- <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span>
-      </div>
+      </div> -->
 
     </el-form>
   </div>
@@ -54,33 +56,35 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { userLogin, userRegister } from '@/api/user'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   res = validUsername(value)
+    //   if (!res.success) {
+    //     callback(new Error('Please enter the correct user name and password'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validatePassword = (rule, value, callback) => {
+    //   if (value.length == 0) {
+    //     callback(new Error('The password can not be null'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '123456'
       },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-      },
+      // loginRules: {
+      //   username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+      //   password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      // },
       loading: false,
       passwordType: 'password',
       redirect: undefined
@@ -110,8 +114,18 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
+            const { username, password } = this.loginForm
+            userLogin({ userName: username.trim(), password: password }).then(response => {
+              this.listLoading = false
+
+              this.$store.commit('setName', this.loginForm.username)
+
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            }).catch(error => {
+              console.log(error)
+              this.loading = false
+            })
           }).catch(() => {
             this.loading = false
           })
@@ -119,6 +133,18 @@ export default {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    handleRegister() {
+      // TODO : test
+      this.loading = true
+      const { username, password } = this.loginForm
+      userLogin({ userName: 'fulao', password: '123456' })
+      userRegister({ userName: username.trim(), password: password, role: 'user' }).then(response => {
+        this.handleLogin()
+      }).catch(error => {
+        console.log(error)
+        this.loading = false
       })
     }
   }
@@ -234,4 +260,5 @@ $light_gray:#eee;
     user-select: none;
   }
 }
+
 </style>

@@ -36,7 +36,30 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    before: require('./mock/mock-server.js'),
+    proxy:{
+      '/api/dish':{
+        target:'http://localhost:9001/',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/api/dish': ''
+        }
+      },
+      '/api/rbac':{
+        target:'http://localhost:9002/',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/api/rbac': ''
+        }
+      },
+      '/api/credit':{
+        target:'http://localhost:9003/',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/api/credit': ''
+        }
+      },
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

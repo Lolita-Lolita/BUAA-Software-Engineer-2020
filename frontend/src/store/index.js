@@ -13,7 +13,15 @@ const store = new Vuex.Store({
     settings,
     user
   },
-  getters
+  getters,
+  state: {
+    name: '用户'
+  },
+  mutations: {
+    setName(state, newName) {
+      state.name = newName
+    }
+  }
 })
 
 export default store

@@ -6,7 +6,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    username: ''
   }
 }
 
@@ -24,6 +25,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_USER_NAME: (state, username) => {
+    state.username = username
   }
 }
 
@@ -62,6 +66,11 @@ const actions = {
         reject(error)
       })
     })
+  },
+
+  setUserName({ commit, username }) {
+    // console.log(username)
+    commit('SET_USER_NAME', username)
   },
 
   // user logout
