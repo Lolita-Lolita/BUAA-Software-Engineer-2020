@@ -55,6 +55,19 @@ public class UserCrudService {
         return userCrud;
     }
 
+    public UserCrud UpdateNameAndRole(UserCrud userCrud, String newUserName, String newRole) {
+        userCrud.setUserName(newUserName);
+        userCrud.setRole(newRole);
+        String password = userCrud.getPassword();
+        userCrud.setPassword(encoder.encode(password));
+        userCrudRepository.save(userCrud);
+        MessageHeaders headers = new MessageHeaders(new HashMap<String, Object>(){{
+            put("operate", "save");
+        }});
+        user.send(MessageBuilder.createMessage(userCrud, headers));
+        return userCrud;
+    }
+
     public List<UserCrud> findAll() {
         return userCrudRepository.findAll();
     }
