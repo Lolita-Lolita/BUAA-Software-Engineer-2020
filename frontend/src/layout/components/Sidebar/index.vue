@@ -12,7 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in myRoutes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -23,6 +23,7 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
+import { getList } from '@/api/user'
 
 export default {
   components: { SidebarItem, Logo },
@@ -30,9 +31,6 @@ export default {
     ...mapGetters([
       'sidebar'
     ]),
-    routes() {
-      return this.$router.options.routes
-    },
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
@@ -51,6 +49,25 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  data() {
+    return {
+      myRoutes:[]
+    }
+  },
+  mounted() {
+    this.myRoutes = JSON.parse(JSON.stringify(this.$router.options.routes))
+
+    this.$http.get('http://localhost:9528/api/rbac/userCrud/findAll').then(
+        response => {},
+        response => {
+          for (var i = 0; i < this.myRoutes.length; i++) {
+            if (this.myRoutes[i].path === "/user") {
+                this.myRoutes.splice(i, 1);
+            }
+          }
+        },
+    );
   }
 }
 </script>

@@ -122,14 +122,17 @@ export default {
     fetchData() {
       this.listLoading = true
       getList().then(response => {
+        console.log(1)
         this.list = response
         this.listLoading = false
+      }).catch(() => {
+        console.log(2)
       })
     },
-    handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
-    },
+    // handleFilter() {
+    //   this.listQuery.page = 1
+    //   this.getList()
+    // },
     handleEdit(row) {
       console.log(row)
       this.userForm = {
@@ -148,6 +151,7 @@ export default {
           type: 'success'
         })
         this.dialogFormVisible = false
+        this.fetchData()
       }).catch(error => {
         this.$message.error('修改权限失败')
         console.log(error)
@@ -159,6 +163,7 @@ export default {
           message: '删除用户成功',
           type: 'success'
         })
+        this.fetchData()
       }).catch(error => {
         this.$message.error('删除用户失败')
         console.log(error)

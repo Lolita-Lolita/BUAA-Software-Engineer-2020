@@ -17,6 +17,12 @@ import '@/permission' // permission control
 
 import qs from 'qs'
 
+// 引入vue-resource
+import VueResource from 'vue-resource'
+
+// 使用vue-resource
+Vue.use(VueResource)
+
 Vue.prototype.$qs = qs
 /**
  * If you don't want to use mock-server

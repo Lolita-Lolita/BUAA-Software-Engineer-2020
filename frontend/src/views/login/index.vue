@@ -113,7 +113,10 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
+          this.$store.dispatch('user/login', {
+        username: 'admin',
+        password: '123456'
+      }).then(() => {
             const { username, password } = this.loginForm
             userLogin({ userName: username.trim(), password: password }).then(response => {
               this.listLoading = false
