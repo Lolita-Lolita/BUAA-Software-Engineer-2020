@@ -55,7 +55,9 @@ public class UserCrudService {
         return userCrud;
     }
 
-    public UserCrud UpdateNameAndRole(UserCrud userCrud, String newUserName, String newRole) {
+    public UserCrud UpdateNameAndRole(Integer id, String newUserName, String newRole) {
+        Optional<UserCrud> userCrudOptional = userCrudRepository.findById(id);
+        UserCrud userCrud = userCrudOptional.get();
         userCrud.setUserName(newUserName);
         userCrud.setRole(newRole);
         String password = userCrud.getPassword();
