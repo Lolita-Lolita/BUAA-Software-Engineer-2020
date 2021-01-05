@@ -11,6 +11,6 @@ public interface UserCrudRepository extends JpaRepository<UserCrud,Integer> {
 
     List<UserCrud> findByRoleLike(String role);
 
-    List<UserCrud> finaAll();
+    List<UserCrud> finAll();
 
 }
