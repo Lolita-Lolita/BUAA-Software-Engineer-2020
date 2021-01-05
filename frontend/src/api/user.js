@@ -1,5 +1,51 @@
 import request from '@/utils/request'
 
+const host_RBAC = '/api/rbac'
+
+export function userLogin(data) {
+  return request({
+    url: '/login',
+    baseURL: host_RBAC,
+    method: 'post',
+    params: data
+    // data:qs.stringify(data)
+  })
+}
+
+export function userRegister(data) {
+  return request({
+    url: '/userCrud/save',
+    baseURL: host_RBAC,
+    method: 'post',
+    params: data // userName, password
+  })
+}
+
+export function userLogout() {
+  return request({
+    url: '/logout',
+    baseURL: host_RBAC,
+    method: 'post'
+  })
+}
+
+export function getList() {
+  return request({
+    url: '/userCrud/findAll',
+    baseURL: host_RBAC,
+    method: 'get'
+  })
+}
+
+export function deleteUser(uid) {
+  return request({
+    url: '/userCrud/delete',
+    baseURL: host_RBAC,
+    method: 'post',
+    params: { id: uid } // id
+  })
+}
+
 export function login(data) {
   return request({
     url: '/vue-admin-template/user/login',
@@ -20,13 +66,5 @@ export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',
     method: 'post'
-  })
-}
-
-export function getList(params) {
-  return request({
-    url: '/vue-admin-template/table/list',
-    method: 'get',
-    params
   })
 }

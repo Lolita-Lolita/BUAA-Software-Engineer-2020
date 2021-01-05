@@ -91,7 +91,7 @@ export const constantRoutes = [
   },
 
   {
-    path: '/User',
+    path: '/user',
     component: Layout,
     children: [
       {
@@ -102,7 +102,6 @@ export const constantRoutes = [
       }
     ]
   },
-  
 
   {
     path: '/form',

@@ -8,118 +8,162 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
     >
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column label="用户名">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.username }}
         </template>
       </el-table-column>
-      <!-- <el-table-column label="作者" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="口味" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column label="位置" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column> -->
       <el-table-column class-name="status-col" label="权限" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-tag :type="scope.row.role | statusFilter">{{ scope.row.role }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="220" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button slot="reference" type="primary" size="mini" @click="handleEdit(row)">
             Edit
           </el-button>
-          <el-button type="danger" size="mini" @click="handleUpdate(row)">
+          <el-button type="danger" size="mini" @click="handleDelete(row.id)">
             Delete
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
+    <el-dialog title="管理用户" :visible.sync="dialogFormVisible">
+      <el-form :model="userForm">
+        <el-form-item label="用户id" :label-width="formLabelWidth">
+          <el-input v-model="userForm.id" :disabled="true" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input v-model="userForm.username" :disabled="true" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="用户权限" :label-width="formLabelWidth">
+          <el-select v-model="userForm.role" placeholder="请选择用户权限">
+            <el-option label="user" value="user" />
+            <el-option label="admin" value="admin" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleConfirm()">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-  import { getList } from '@/api/user'
-  export default {
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger'
-        }
-        return statusMap[status]
+import { getList, deleteUser, userRegister } from '@/api/user'
+export default {
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        'admin': 'success',
+        'user': 'primary'
       }
+      return statusMap[status]
+    }
+  },
+  data() {
+    return {
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+      userForm: {
+        id: 0,
+        username: '',
+        role: ''
+      },
+      tableKey: 0,
+      list: null,
+      total: 0,
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 20,
+        importance: undefined,
+        title: undefined,
+        type: undefined,
+        sort: '+id'
+      },
+      importanceOptions: [1, 2, 3],
+      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      statusOptions: ['published', 'draft', 'deleted'],
+      showReviewer: false,
+      temp: {
+        id: undefined,
+        importance: 1,
+        remark: '',
+        timestamp: new Date(),
+        title: '',
+        type: '',
+        status: 'published'
+      },
+      dialogStatus: '',
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
+      },
+      dialogPvVisible: false,
+      pvData: []
+    }
+  },
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    fetchData() {
+      this.listLoading = true
+      getList().then(response => {
+        this.list = response
+        this.listLoading = false
+      })
     },
-    data() {
-      return {
-        tableKey: 0,
-        list: null,
-        total: 0,
-        listLoading: true,
-        listQuery: {
-          page: 1,
-          limit: 20,
-          importance: undefined,
-          title: undefined,
-          type: undefined,
-          sort: '+id'
-        },
-        importanceOptions: [1, 2, 3],
-        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-        statusOptions: ['published', 'draft', 'deleted'],
-        showReviewer: false,
-        temp: {
-          id: undefined,
-          importance: 1,
-          remark: '',
-          timestamp: new Date(),
-          title: '',
-          type: '',
-          status: 'published'
-        },
-        dialogFormVisible: false,
-        dialogStatus: '',
-        textMap: {
-          update: 'Edit',
-          create: 'Create'
-        },
-        dialogPvVisible: false,
-        pvData: [],
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
+    },
+    handleEdit(row) {
+      console.log(row)
+      this.userForm = {
+        id: row.id,
+        username: row.username,
+        role: row.role
       }
+      this.dialogFormVisible = true
     },
-    created() {
-      this.fetchData()
-    },
-    methods: {
-      fetchData() {
-        this.listLoading = true
-        getList().then(response => {
-          this.list = response.data.items
-          this.listLoading = false
+    handleConfirm() {
+      // TODO: 修改权限
+      const id = 1
+      deleteUser(id).then(response => {
+        this.$message({
+          message: '修改权限成功',
+          type: 'success'
         })
-      },
-      handleFilter() {
-        this.listQuery.page = 1
-        this.getList()
-      },
+        this.dialogFormVisible = false
+      }).catch(error => {
+        this.$message.error('修改权限失败')
+        console.log(error)
+      })
+    },
+    handleDelete(id) {
+      deleteUser(id).then(response => {
+        this.$message({
+          message: '删除用户成功',
+          type: 'success'
+        })
+      }).catch(error => {
+        this.$message.error('删除用户失败')
+        console.log(error)
+      })
     }
   }
+}
 </script>
