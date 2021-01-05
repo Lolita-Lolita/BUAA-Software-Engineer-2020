@@ -6,6 +6,7 @@ import com.example.user.service.UserCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,10 +46,16 @@ public class UserController
         return ResponseEntity.ok(userService.findByRoleLike(role));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('admin')")
     @PostMapping("/save")
     public ResponseEntity<UserCrud> save(UserCrud userCrud) {
         return ResponseEntity.ok(userService.save(userCrud));
+    }
+
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/update")
+    public ResponseEntity<UserCrud> updateNewUserNameAndRole(UserCrud userCrud, String newUserName, String newRole) {
+        return ResponseEntity.ok(userService.UpdateNameAndRole(userCrud, newUserName, newRole));
     }
 
     @PreAuthorize("hasRole('admin')")
