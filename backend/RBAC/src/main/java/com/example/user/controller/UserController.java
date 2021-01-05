@@ -45,7 +45,7 @@ public class UserController
         return ResponseEntity.ok(userService.findByRoleLike(role));
     }
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("permitAll()")
     @PostMapping("/save")
     public ResponseEntity<UserCrud> save(UserCrud userCrud) {
         return ResponseEntity.ok(userService.save(userCrud));

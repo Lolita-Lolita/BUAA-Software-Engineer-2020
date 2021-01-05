@@ -46,7 +46,7 @@ public class UserCrudService {
     }
 
     public UserCrud save(UserCrud userCrud) {
-        userCrud.setPassWord(encoder.encode(userCrud.getPassWord()));
+        userCrud.setPassword(encoder.encode(userCrud.getPassword()));
         userCrudRepository.save(userCrud);
         MessageHeaders headers = new MessageHeaders(new HashMap<String, Object>(){{
             put("operate", "save");
