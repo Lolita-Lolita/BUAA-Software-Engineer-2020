@@ -21,7 +21,7 @@ public class AuthEnvironmentPostProcessor implements EnvironmentPostProcessor {
         boolean autoScan = environment.getProperty("security.auto-scan", boolean.class, true);
         if (enable) {
             if (Objects.isNull(value)) {
-                addProperty(environment, "server.servlet.session.timeout", 150);
+                addProperty(environment, "server.servlet.session.timeout", 7200);
             }
             if (autoScan) {
                 addProperty(environment, "security.scan-entity", application.getMainApplicationClass().getPackage().getName());
