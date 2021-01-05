@@ -72,7 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.logoutSuccessHandler(login)
 				.deleteCookies("JSESSIONID")
 				.clearAuthentication(true)
-			.and().rememberMe().tokenValiditySeconds(15)
+			.and().rememberMe().tokenValiditySeconds(7200)
 			.and().exceptionHandling()
 				.authenticationEntryPoint(new Http403ForbiddenEntryPoint());
 	}

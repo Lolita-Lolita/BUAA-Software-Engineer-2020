@@ -54,8 +54,8 @@ public class UserController
 
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/update")
-    public ResponseEntity<UserCrud> updateNewUserNameAndRole(UserCrud userCrud, String newUserName, String newRole) {
-        return ResponseEntity.ok(userService.UpdateNameAndRole(userCrud, newUserName, newRole));
+    public ResponseEntity<UserCrud> updateNewUserNameAndRole(Integer id, String newUserName, String newRole) {
+        return ResponseEntity.ok(userService.UpdateNameAndRole(id, newUserName, newRole));
     }
 
     @PreAuthorize("hasRole('admin')")
