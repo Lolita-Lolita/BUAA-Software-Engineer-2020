@@ -15,11 +15,23 @@ const store = new Vuex.Store({
   },
   getters,
   state: {
-    name: '用户'
+    name: '用户',
+    processing: false,
+    session:{
+      rbac: '',
+      credit: '',
+      dish: '',
+    }
   },
   mutations: {
     setName(state, newName) {
       state.name = newName
+    },
+    setSession(state, newSession){
+      state.session[newSession.name] = newSession.id
+    },
+    setProcessing(state, processing){
+      state.processing = processing
     }
   }
 })

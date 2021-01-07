@@ -23,7 +23,7 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
-import { getList } from '@/api/user'
+import { getList,getRBACSession } from '@/api/user'
 
 export default {
   components: { SidebarItem, Logo },
@@ -52,22 +52,46 @@ export default {
   },
   data() {
     return {
-      myRoutes:[]
+      myRoutes:[],
+      userRoute:{}
     }
   },
   mounted() {
     this.myRoutes = JSON.parse(JSON.stringify(this.$router.options.routes))
+   
+    this.$store.commit('setProcessing', true)
 
-    this.$http.get('http://localhost:9528/api/rbac/userCrud/findAll').then(
-        response => {},
+    // this.sleeps(5000)
+
+    let _this=this
+
+    for (var i = 0; i < _this.myRoutes.length; i++) {
+      if (_this.myRoutes[i].path === "/user") {
+        _this.userRoute = _this.myRoutes[i]
+        _this.myRoutes.splice(i, 1)
+        break
+      }
+    }
+
+    setTimeout(function()  {
+      getRBACSession()
+      _this.$http.get('http://localhost:9528/api/rbac/userCrud/findAll').then(
         response => {
-          for (var i = 0; i < this.myRoutes.length; i++) {
-            if (this.myRoutes[i].path === "/user") {
-                this.myRoutes.splice(i, 1);
-            }
-          }
+          _this.myRoutes.push(_this.userRoute)
+          _this.$store.commit('setProcessing', false)
         },
-    );
-  }
+        response => {
+          _this.$store.commit('setProcessing', false)
+        },
+      )
+    }, 1000);
+  },
+  methods: {
+    sleeps(delay){
+      var start = new Date().getTime();
+      while (new Date().getTime() < start + delay){
+      }
+    }
+  },
 }
 </script>

@@ -24,7 +24,16 @@ AuthenticationFailureHandler, LogoutSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
+		String sessionId = request.getSession().getId();
 		response.setStatus(HttpStatus.OK.value());
+		response.getWriter().println("{\"session\":\""+sessionId+"\"}");
+
+		String header = response.getHeader("Set-Cookie");
+		int index;
+		if(header !=null && (index = header.indexOf("HttpOnly"))>0) {
+			header = header.substring(0,index - 1);
+			response.setHeader("Set-Cookie",header);
+		}
 	}
 
 	@Override

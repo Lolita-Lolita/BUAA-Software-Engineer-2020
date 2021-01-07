@@ -1,11 +1,29 @@
 import request from '@/utils/request'
+import store from '@/store/'
 
 const host_RBAC = '/api/rbac'
 const host_dish = '/api/dish'
 const host_credit = '/api/credit'
 
+export function getRBACSession() {
+  document.cookie = "JSESSIONID="+store.state.session['rbac']
+  console.log("set cookie as "+ "rbac",store.state.session['rbac'])
+  return
+}
 
-export function userLogin(data) {
+export function getDishSession() {
+  document.cookie = "JSESSIONID="+store.state.session['dish']
+  console.log("set cookie as "+ "dish",store.state.session['dish'])
+  return 
+}
+
+export function getCreditSession() {
+  document.cookie = "JSESSIONID="+store.state.session['credit']
+  console.log("set cookie as "+ "credit",store.state.session['credit'])
+  return
+}
+
+export function rbacLogin(data) {
   return request({
     url: '/login',
     baseURL: host_RBAC,
@@ -15,7 +33,7 @@ export function userLogin(data) {
   })
 }
 
-export function userLogin2(data) {
+export function dishLogin(data) {
   return request({
     url: '/login',
     baseURL: host_dish,
@@ -24,7 +42,7 @@ export function userLogin2(data) {
   })
 }
 
-export function userLogin3(data) {
+export function creditLogin(data) {
   return request({
     url: '/login',
     baseURL: host_credit,
@@ -34,6 +52,7 @@ export function userLogin3(data) {
 }
 
 export function userRegister(data) {
+  getRBACSession()
   return request({
     url: '/userCrud/save',
     baseURL: host_RBAC,
@@ -43,6 +62,7 @@ export function userRegister(data) {
 }
 
 export function userLogout() {
+  getRBACSession()
   return request({
     url: '/logout',
     baseURL: host_RBAC,
@@ -51,6 +71,8 @@ export function userLogout() {
 }
 
 export function getList() {
+  getRBACSession()
+  console.log("cookie:",document.cookie)
   return request({
     url: '/userCrud/findAll',
     baseURL: host_RBAC,
@@ -59,6 +81,7 @@ export function getList() {
 }
 
 export function deleteUser(uid) {
+  getRBACSession()
   return request({
     url: '/userCrud/delete',
     baseURL: host_RBAC,
@@ -91,6 +114,7 @@ export function logout() {
 }
 
 export function getFoodList(data) {
+  getDishSession()  
   return request({
     url: '/dish/findAll',
     baseURL: host_dish,

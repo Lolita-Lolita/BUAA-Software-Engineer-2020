@@ -56,7 +56,9 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { userLogin, userLogin2, userLogin3, userRegister } from '@/api/user'
+import { rbacLogin, creditLogin, dishLogin, userRegister } from '@/api/user'
+import { getToken } from '@/utils/auth'
+
 
 export default {
   name: 'Login',
@@ -118,22 +120,31 @@ export default {
         password: '123456'
       }).then(() => {
             const { username, password } = this.loginForm
-            userLogin({ userName: username.trim(), password: password }).then(response => {
-              userLogin3({ userName: username.trim(), password: password }).then(response => {
-                userLogin2({ userName: username.trim(), password: password }).then(response => {
+            rbacLogin({ userName: username.trim(), password: password }).then(response => {
+              this.$store.commit('setSession', {name:'rbac', id:response['session']} )
+
+              creditLogin({ userName: username.trim(), password: password }).then(response => {
+                this.$store.commit('setSession', {name:'credit', id:response['session']})
+
+                dishLogin({ userName: username.trim(), password: password }).then(response => {
+                  this.$store.commit('setSession', {name:'dish', id:response['session']})
+
+                  console.log(this.$store.state.session)
                   this.listLoading = false
                   this.$store.commit('setName', this.loginForm.username)
                   this.$router.push({ path: this.redirect || '/' })
                   this.loading = false
                 })
               })
-            }).catch(error => {
-              console.log(error)
-              this.loading = false
             })
-          }).catch(() => {
-            this.loading = false
+            // .catch(error => {
+            //   console.log(error)
+            //   this.loading = false
+            // })
           })
+          // .catch(() => {
+          //   this.loading = false
+          // })
         } else {
           console.log('error submit!!')
           return false
