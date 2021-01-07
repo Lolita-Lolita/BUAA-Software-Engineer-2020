@@ -50,12 +50,15 @@
         </template>
       </el-table-column>
       <el-table-column label="位置" width="200" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.location }}
-        </template>
+      <template slot-scope="scope">
+        {{ scope.row.location }}
+      </template>
       </el-table-column>
-      <el-table-column label="查看评分" align="center" width="200" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
+          <el-button type="primary" size="mini" @click="handleCheck(row)">
+            查看评分
+          </el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             评分
           </el-button>
@@ -71,7 +74,7 @@
         <el-form-item label="菜品味道" prop="taste" >
           <el-input v-model="temp.taste" disabled="true"/>
         </el-form-item>
-        <el-form-item label="菜品味道" prop="location" >
+        <el-form-item label="菜品位置" prop="location" >
           <el-input v-model="temp.location" disabled="true"/>
         </el-form-item>
         <el-form-item label="外表评分" prop="lookCredit" required="true" >
@@ -94,11 +97,39 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="查看评分" :visible.sync="dialogFormVisible2">
+      <el-form ref="dataTable" :model="temp2,temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="菜品名称" prop="dishName" >
+          <el-input v-model="temp.dishName" disabled="true"/>
+        </el-form-item>
+        <el-form-item label="菜品味道" prop="taste" >
+          <el-input v-model="temp.taste" disabled="true"/>
+        </el-form-item>
+        <el-form-item label="菜品位置" prop="location" >
+          <el-input v-model="temp.location" disabled="true"/>
+        </el-form-item>
+        <el-form-item label="外表评分" prop="lookCredit" >
+          <el-input v-model="temp2.lookCredit" disabled="true"/>
+        </el-form-item>
+        <el-form-item label="香味评分" prop="smellCredit">
+          <el-input v-model="temp2.smellCredit" disabled="true"/>
+        </el-form-item>
+        <el-form-item label="味道评分" prop="tasteCredit">
+          <el-input v-model="temp2.tasteCredit" disabled="true"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible2 = false">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-  import { getFoodList, setCredit } from '@/api/user'
+  import { getFoodList, setCredit, getFoodDetail } from '@/api/user'
   export default {
     filters: {
       statusFilter(status) {
@@ -116,6 +147,7 @@
         total: 0,
         listLoading: true,
         listQuery: {
+          id:undefined,
           dishName: undefined,
           dishPrice:undefined,
           taste: undefined,
@@ -135,7 +167,13 @@
           smellCredit: '',
           tasteCredit: '',
         },
+        temp2: {
+          lookCredit: undefined,
+          smellCredit: undefined,
+          tasteCredit: undefined,
+        },
         dialogFormVisible: false,
+        dialogFormVisible2: false,
         dialogStatus: '',
         textMap: {
           update: 'Edit',
@@ -153,11 +191,10 @@
         this.listLoading = true
         getFoodList(this.listQuery).then(response => {
           //console.log(response)
-          this.list = response.content
+          this.list= response.content
           this.listLoading = false
         })
       },
-
       handleFilter() {
         this.fetchData()
       },
@@ -167,14 +204,31 @@
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
+          this.$refs['dataForm'].resetField ()
+        })
+      },
+      handleCheck(row) {
+        getFoodDetail(row.id).then(response => {
+          console.log(response)
+          this.temp = Object.assign({}, response)
+          this.temp2 = Object.assign({}, response.credit) // copy obj
+          this.dialogFormVisible2 = true
+          this.$nextTick(() => {
+            this.$refs['dataTable'].resetField ()
+          })
         })
       },
       updateData() {
             const tempData = Object.assign({}, this.temp)
-            const params = {did:tempData.id, lookCredit:tempData.lookCredit, smellCredit: tempData.smellCredit, tasteCredit: tempData.smellCredit}
+            const params = {dishID:tempData.id, lookCredit:tempData.lookCredit, smellCredit: tempData.smellCredit, tasteCredit: tempData.smellCredit}
             setCredit(params).then(response => {
-              console.log(response)
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '评分成功',
+                type: 'success',
+                duration: 2000
+              })
             })
       },
     }

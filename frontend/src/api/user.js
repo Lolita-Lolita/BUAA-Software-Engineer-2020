@@ -123,10 +123,19 @@ export function getFoodList(data) {
   })
 }
 
+export function getFoodDetail(data) {
+  getDishSession()
+  return request({
+    url: '/dish/credit/'+data,
+    baseURL: host_dish,
+    method: 'get',
+  })
+}
+
 export function setCredit(data) {
   getCreditSession()
   return request({
-    url: '/set-credit',
+    url: '/credit/set-credit',
     baseURL: host_credit,
     method: 'post',
     params: data
