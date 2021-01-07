@@ -2,16 +2,13 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="菜品名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.title" placeholder="价格" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.importance" placeholder="口味" clearable style="width: 90px" class="filter-item">
+      <el-input v-model="listQuery.dishName" placeholder="菜品名称" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.taste" placeholder="口味" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.dishType" placeholder="种类" clearable style="width: 150px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery.importance" placeholder="种类" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.importance" placeholder="位置" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
+      <el-select v-model="listQuery.location" placeholder="位置" clearable style="width: 150px" class="filter-item">
+        <el-option v-for="item in locationOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
@@ -26,42 +23,41 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="ID" width="100">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="菜品名称">
+      <el-table-column label="菜品名称" align="center" >
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.dishName }}
         </template>
       </el-table-column>
-      <el-table-column label="价格" width="110" align="center">
+      <el-table-column label="价格" width="200" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.dishPrice }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="口味" width="110" align="center">
+      <el-table-column label="口味" width="200" align="center">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          {{ scope.row.taste }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="种类" width="110" align="center">
+      <el-table-column class-name="status-col" label="种类" width="200" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-tag :type="scope.row.dishType | statusFilter">{{ scope.row.dishType }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="位置" width="110" align="center">
+      <el-table-column label="位置" width="200" align="center">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          {{ scope.row.location }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="110" class-name="small-padding fixed-width">
+      <el-table-column label="查看评分" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
+            评分
           </el-button>
         </template>
       </el-table-column>
@@ -76,9 +72,8 @@
     filters: {
       statusFilter(status) {
         const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger'
+          素菜: 'success',
+          荤菜: 'gray',
         }
         return statusMap[status]
       }
@@ -90,14 +85,13 @@
         total: 0,
         listLoading: true,
         listQuery: {
-          page: 1,
-          limit: 20,
-          importance: undefined,
-          title: undefined,
-          type: undefined,
-          sort: '+id'
+          dishName: undefined,
+          dishPrice:undefined,
+          taste: undefined,
+          dishType: undefined,
         },
-        importanceOptions: [1, 2, 3],
+        importanceOptions: ['荤菜', '素菜'],
+        locationOptions: ['学一食堂', '学二食堂'],
         sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
         statusOptions: ['published', 'draft', 'deleted'],
         showReviewer: false,
@@ -126,14 +120,16 @@
     methods: {
       fetchData() {
         this.listLoading = true
-        getFoodList({dishName:'肉'}).then(response => {
-          this.list = response.data
+        getFoodList(this.listQuery).then(response => {
+          //console.log(response)
+          this.list = response.content
           this.listLoading = false
         })
       },
+
       handleFilter() {
-        this.listQuery.page = 1
-        this.getList()
+        console.log(this.listQuery)
+        this.fetchData()
       },
     }
   }
