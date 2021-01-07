@@ -2,6 +2,7 @@ import request from '@/utils/request'
 
 const host_RBAC = '/api/rbac'
 const host_dish = '/api/dish'
+const host_credit = '/api/credit'
 
 
 export function userLogin(data) {
@@ -17,7 +18,7 @@ export function userLogin(data) {
 export function userLogin2(data) {
   return request({
     url: '/login',
-    baseURL: '/api/dish',
+    baseURL: host_dish,
     method: 'post',
     params: data
   })
@@ -26,7 +27,7 @@ export function userLogin2(data) {
 export function userLogin3(data) {
   return request({
     url: '/login',
-    baseURL: '/api/credit',
+    baseURL: host_credit,
     method: 'post',
     params: data
   })

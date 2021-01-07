@@ -119,14 +119,14 @@ export default {
       }).then(() => {
             const { username, password } = this.loginForm
             userLogin({ userName: username.trim(), password: password }).then(response => {
-              this.listLoading = false
-              userLogin2({ userName: username.trim(), password: password })
-              userLogin3({ userName: username.trim(), password: password })
-              
-              this.$store.commit('setName', this.loginForm.username)
-
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
+              userLogin3({ userName: username.trim(), password: password }).then(response => {
+                userLogin2({ userName: username.trim(), password: password }).then(response => {
+                  this.listLoading = false
+                  this.$store.commit('setName', this.loginForm.username)
+                  this.$router.push({ path: this.redirect || '/' })
+                  this.loading = false
+                })
+              })
             }).catch(error => {
               console.log(error)
               this.loading = false
