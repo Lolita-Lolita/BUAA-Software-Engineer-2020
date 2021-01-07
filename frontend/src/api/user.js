@@ -12,6 +12,24 @@ export function userLogin(data) {
   })
 }
 
+export function userLogin2(data) {
+  return request({
+    url: '/login',
+    baseURL: '/api/dish',
+    method: 'post',
+    params: data
+  })
+}
+
+export function userLogin3(data) {
+  return request({
+    url: '/login',
+    baseURL: '/api/credit',
+    method: 'post',
+    params: data
+  })
+}
+
 export function userRegister(data) {
   return request({
     url: '/userCrud/save',

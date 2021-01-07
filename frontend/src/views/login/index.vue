@@ -56,7 +56,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { userLogin, userRegister } from '@/api/user'
+import { userLogin, userLogin2, userLogin3, userRegister } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -120,7 +120,9 @@ export default {
             const { username, password } = this.loginForm
             userLogin({ userName: username.trim(), password: password }).then(response => {
               this.listLoading = false
-
+              userLogin2({ userName: username.trim(), password: password })
+              userLogin3({ userName: username.trim(), password: password })
+              
               this.$store.commit('setName', this.loginForm.username)
 
               this.$router.push({ path: this.redirect || '/' })
