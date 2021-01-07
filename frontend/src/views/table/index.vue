@@ -71,7 +71,7 @@
 </template>
 
 <script>
-  import { getList } from '@/api/table'
+  import { getFoodList } from '@/api/user'
   export default {
     filters: {
       statusFilter(status) {
@@ -126,8 +126,8 @@
     methods: {
       fetchData() {
         this.listLoading = true
-        getList().then(response => {
-          this.list = response.data.items
+        getFoodList({dishName:'肉'}).then(response => {
+          this.list = response.data
           this.listLoading = false
         })
       },

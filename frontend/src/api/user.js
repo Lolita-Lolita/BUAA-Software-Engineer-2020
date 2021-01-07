@@ -1,6 +1,8 @@
 import request from '@/utils/request'
 
 const host_RBAC = '/api/rbac'
+const host_dish = '/api/dish'
+
 
 export function userLogin(data) {
   return request({
@@ -84,5 +86,14 @@ export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',
     method: 'post'
+  })
+}
+
+export function getFoodList(data) {
+  return request({
+    url: '/dish/findAll',
+    baseURL: host_dish,
+    method: 'post',
+    params: data
   })
 }

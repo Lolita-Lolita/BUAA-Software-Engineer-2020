@@ -39,7 +39,7 @@ module.exports = {
     before: require('./mock/mock-server.js'),
     proxy:{
       '/api/dish':{
-        target:'http://localhost:9001/',
+        target:'http://localhost:9004/',
         changeOrigin:true,
         pathRewrite:{
           '^/api/dish': ''
