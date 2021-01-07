@@ -11,7 +11,7 @@
         <el-option v-for="item in locationOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        Search
+        搜索
       </el-button>
     </div>
 
@@ -63,11 +63,42 @@
       </el-table-column>
     </el-table>
 
+    <el-dialog title="评分" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="菜品名称" prop="dishName" >
+          <el-input v-model="temp.dishName" disabled="true"/>
+        </el-form-item>
+        <el-form-item label="菜品味道" prop="taste" >
+          <el-input v-model="temp.taste" disabled="true"/>
+        </el-form-item>
+        <el-form-item label="菜品味道" prop="location" >
+          <el-input v-model="temp.location" disabled="true"/>
+        </el-form-item>
+        <el-form-item label="外表评分" prop="lookCredit" required="true" >
+          <el-input v-model="temp.lookCredit" />
+        </el-form-item>
+        <el-form-item label="香味评分" prop="smellCredit" required="true" >
+          <el-input v-model="temp.smellCredit" />
+        </el-form-item>
+        <el-form-item label="味道评分" prop="tasteCredit" required="true" >
+          <el-input v-model="temp.tasteCredit" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-  import { getFoodList } from '@/api/user'
+  import { getFoodList, setCredit } from '@/api/user'
   export default {
     filters: {
       statusFilter(status) {
@@ -91,18 +122,18 @@
           dishType: undefined,
         },
         importanceOptions: ['荤菜', '素菜'],
-        locationOptions: ['学一食堂', '学二食堂'],
+        locationOptions: ['学一食堂', '学二食堂','学四食堂'],
         sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
         statusOptions: ['published', 'draft', 'deleted'],
         showReviewer: false,
         temp: {
           id: undefined,
-          importance: 1,
-          remark: '',
-          timestamp: new Date(),
-          title: '',
-          type: '',
-          status: 'published'
+          dishName: undefined,
+          taste: undefined,
+          location: undefined,
+          lookCredit: '',
+          smellCredit: '',
+          tasteCredit: '',
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -128,8 +159,23 @@
       },
 
       handleFilter() {
-        console.log(this.listQuery)
         this.fetchData()
+      },
+      handleUpdate(row) {
+        console.log(row)
+        this.temp = Object.assign({}, row) // copy obj
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+      },
+      updateData() {
+            const tempData = Object.assign({}, this.temp)
+            const params = {did:tempData.id, lookCredit:tempData.lookCredit, smellCredit: tempData.smellCredit, tasteCredit: tempData.smellCredit}
+            setCredit(params).then(response => {
+              console.log(response)
+            })
       },
     }
   }

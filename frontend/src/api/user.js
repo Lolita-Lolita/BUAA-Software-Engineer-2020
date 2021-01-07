@@ -14,7 +14,7 @@ export function getRBACSession() {
 export function getDishSession() {
   document.cookie = "JSESSIONID="+store.state.session['dish']
   console.log("set cookie as "+ "dish",store.state.session['dish'])
-  return 
+  return
 }
 
 export function getCreditSession() {
@@ -114,10 +114,20 @@ export function logout() {
 }
 
 export function getFoodList(data) {
-  getDishSession()  
+  getDishSession()
   return request({
     url: '/dish/findAll',
     baseURL: host_dish,
+    method: 'post',
+    params: data
+  })
+}
+
+export function setCredit(data) {
+  getCreditSession()
+  return request({
+    url: '/set-credit',
+    baseURL: host_credit,
     method: 'post',
     params: data
   })
