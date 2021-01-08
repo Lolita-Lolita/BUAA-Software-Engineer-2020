@@ -10,7 +10,7 @@
       <el-select v-model="listQuery.location" placeholder="位置" clearable style="width: 150px" class="filter-item">
         <el-option v-for="item in locationOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" style="width: 100px" @click="handleFilter">
         搜索
       </el-button>
     </div>
@@ -66,6 +66,17 @@
       </el-table-column>
     </el-table>
 
+    <div class="block" style="padding-top: 30px">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        background
+        layout="total, prev, pager, next"
+        :total="36"
+        :page-size="20">
+      </el-pagination>
+    </div>
+
     <el-dialog title="评分" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="80px" style="width: 400px; margin-left:50px;">
         <el-form-item label="菜品名称" prop="dishName" >
@@ -108,6 +119,9 @@
         <el-form-item label="菜品位置" prop="location" >
           <el-input v-model="temp.location" disabled="true"/>
         </el-form-item>
+        <el-form-item label="平均评分" prop="lookCredit" >
+          <el-input v-model="temp2.averageCredit" disabled="true"/>
+        </el-form-item>
         <el-form-item label="外表评分" prop="lookCredit" >
           <el-input v-model="temp2.lookCredit" disabled="true"/>
         </el-form-item>
@@ -144,9 +158,11 @@
       return {
         tableKey: 0,
         list: null,
-        total: 0,
+        total: 36,
+        currentPage:0,
         listLoading: true,
         listQuery: {
+          page: 0,
           id:undefined,
           dishName: undefined,
           dishPrice:undefined,
@@ -155,8 +171,6 @@
         },
         importanceOptions: ['荤菜', '素菜'],
         locationOptions: ['学一食堂', '学二食堂','学四食堂'],
-        sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-        statusOptions: ['published', 'draft', 'deleted'],
         showReviewer: false,
         temp: {
           id: undefined,
@@ -168,6 +182,7 @@
           tasteCredit: '',
         },
         temp2: {
+          averageCredit:undefined,
           lookCredit: undefined,
           smellCredit: undefined,
           tasteCredit: undefined,
@@ -175,12 +190,6 @@
         dialogFormVisible: false,
         dialogFormVisible2: false,
         dialogStatus: '',
-        textMap: {
-          update: 'Edit',
-          create: 'Create'
-        },
-        dialogPvVisible: false,
-        pvData: [],
       }
     },
     created() {
@@ -190,7 +199,7 @@
       fetchData() {
         this.listLoading = true
         getFoodList(this.listQuery).then(response => {
-          //console.log(response)
+          console.log(response)
           this.list= response.content
           this.listLoading = false
         })
@@ -231,6 +240,15 @@
               })
             })
       },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.listQuery.page = val-1
+        getFoodList(this.listQuery).then(response => {
+          console.log(response)
+          this.list= response.content
+          this.listLoading = false
+        })
+      }
     }
   }
 </script>
