@@ -9,7 +9,7 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="ID" width="100">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
@@ -19,7 +19,7 @@
           {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="权限" width="110" align="center">
+      <el-table-column class-name="status-col" label="权限" width="200" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.role | statusFilter">{{ scope.row.role }}</el-tag>
         </template>
@@ -27,10 +27,10 @@
       <el-table-column label="操作" align="center" width="220" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button slot="reference" type="primary" size="mini" @click="handleEdit(row)">
-            Edit
+            编辑
           </el-button>
           <el-button type="danger" size="mini" @click="handleDelete(row.id)">
-            Delete
+            删除
           </el-button>
         </template>
       </el-table-column>
