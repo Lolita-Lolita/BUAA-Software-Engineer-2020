@@ -10,7 +10,7 @@
       <el-select v-model="listQuery.location" placeholder="位置" clearable style="width: 150px" class="filter-item">
         <el-option v-for="item in locationOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" style="width: 100px" @click="handleFilter">
+      <el-button class="filter-item" type="primary" icon="el-icon-search" style="width: 100px" @click="handleFilter">
         搜索
       </el-button>
     </div>
@@ -89,13 +89,13 @@
           <el-input v-model="temp.location" disabled="true"/>
         </el-form-item>
         <el-form-item label="外表评分" prop="lookCredit" required="true" >
-          <el-input v-model="temp.lookCredit" />
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp.lookCredit" show-score></el-rate>
         </el-form-item>
         <el-form-item label="香味评分" prop="smellCredit" required="true" >
-          <el-input v-model="temp.smellCredit" />
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp.smellCredit" show-score></el-rate>
         </el-form-item>
         <el-form-item label="味道评分" prop="tasteCredit" required="true" >
-          <el-input v-model="temp.tasteCredit" />
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp.tasteCredit" show-score></el-rate>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -120,16 +120,16 @@
           <el-input v-model="temp.location" disabled="true"/>
         </el-form-item>
         <el-form-item label="平均评分" prop="lookCredit" >
-          <el-input v-model="temp2.averageCredit" disabled="true"/>
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.averageCredit" disabled show-score></el-rate>
         </el-form-item>
         <el-form-item label="外表评分" prop="lookCredit" >
-          <el-input v-model="temp2.lookCredit" disabled="true"/>
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.lookCredit" disabled show-score></el-rate>
         </el-form-item>
         <el-form-item label="香味评分" prop="smellCredit">
-          <el-input v-model="temp2.smellCredit" disabled="true"/>
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.smellCredit" disabled show-score></el-rate>
         </el-form-item>
         <el-form-item label="味道评分" prop="tasteCredit">
-          <el-input v-model="temp2.tasteCredit" disabled="true"/>
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.tasteCredit" disabled show-score></el-rate>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -182,7 +182,7 @@
           tasteCredit: '',
         },
         temp2: {
-          averageCredit:undefined,
+          averageCredit: undefined,
           lookCredit: undefined,
           smellCredit: undefined,
           tasteCredit: undefined,
@@ -223,11 +223,35 @@
           console.log(response)
           this.temp = Object.assign({}, response)
           this.temp2 = Object.assign({}, response.credit) // copy obj
+          this.temp2['averageCredit'] = this.fitScoreRange(this.temp2['averageCredit'])
+          this.temp2['lookCredit'] = this.fitScoreRange(this.temp2['lookCredit'])
+          this.temp2['smellCredit'] = this.fitScoreRange(this.temp2['smellCredit'])
+          this.temp2['tasteCredit'] = this.fitScoreRange(this.temp2['tasteCredit'])
           this.dialogFormVisible2 = true
           this.$nextTick(() => {
             this.$refs['dataTable'].resetField ()
           })
+        }).catch(error => {
+          console.log(error)
+          this.temp2['averageCredit'] =0
+          this.temp2['lookCredit'] = 0
+          this.temp2['smellCredit'] = 0
+          this.temp2['tasteCredit'] = 0
         })
+      },
+      fitScoreRange(score){
+        if(score=="NaN"){
+          return 0
+        }
+        if(score>5){
+          return 5
+        }
+        else if(score<0){
+          return 0
+        }
+        else {
+          return score
+        }
       },
       updateData() {
             const tempData = Object.assign({}, this.temp)
