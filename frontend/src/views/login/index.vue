@@ -56,7 +56,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { rbacLogin, creditLogin, dishLogin, userRegister } from '@/api/user'
+import { rbacLogin, creditLogin, dishLogin, userRegister, getList } from '@/api/user'
 import { getToken } from '@/utils/auth'
 
 
@@ -137,14 +137,15 @@ export default {
                 })
               })
             })
-            // .catch(error => {
-            //   console.log(error)
-            //   this.loading = false
-            // })
+            .catch(error => {
+              console.log(error)
+              this.loading = false
+            })
           })
-          // .catch(() => {
-          //   this.loading = false
-          // })
+          .catch(error => {
+            console.log(error)
+            this.loading = false
+          })
         } else {
           console.log('error submit!!')
           return false
@@ -155,12 +156,36 @@ export default {
       // TODO : test
       this.loading = true
       const { username, password } = this.loginForm
-      userLogin({ userName: 'fulao', password: '123456' })
-      userRegister({ userName: username.trim(), password: password, role: 'user' }).then(response => {
-        this.handleLogin()
-      }).catch(error => {
-        console.log(error)
-        this.loading = false
+      rbacLogin({ userName: 'admin', password: '123456' }).then(response => {
+        this.$store.commit('setSession', {name:'rbac', id:response['session']})
+
+        getList().then(response => {
+          let list = response
+          for(let i = 0; i<list.length;i++){
+            if(list[i].username == username.trim()){
+              this.$message({
+                message: '注册失败，用户已存在',
+                type: 'warning'
+              })
+              this.loading = false
+              return
+            }
+          }
+          userRegister({ userName: username.trim(), password: password, role: 'user' }).then(response => {
+            this.$message({
+              message: '注册成功',
+              type: 'success'
+            })
+            this.loading = false
+          }).catch(error => {
+            console.log(error)
+            this.$message({
+              message: '注册失败',
+              type: 'warning'
+            })
+            this.loading = false
+          })
+        })
       })
     }
   }

@@ -26,10 +26,10 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="220" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button slot="reference" type="primary" size="mini" @click="handleEdit(row)">
+          <el-button slot="reference" type="primary" size="mini" :disabled="row.id==1" @click="handleEdit(row)">
             编辑
           </el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(row.id)">
+          <el-button type="danger" size="mini" :disabled="row.id==1" @click="handleDelete(row.id)">
             删除
           </el-button>
         </template>
@@ -42,10 +42,10 @@
           <el-input v-model="userForm.id" :disabled="true" autocomplete="off" />
         </el-form-item>
         <el-form-item label="用户名" :label-width="formLabelWidth">
-          <el-input v-model="userForm.username" :disabled="true" autocomplete="off" />
+          <el-input v-model="userForm.newUserName" autocomplete="off" />
         </el-form-item>
         <el-form-item label="用户权限" :label-width="formLabelWidth">
-          <el-select v-model="userForm.role" placeholder="请选择用户权限">
+          <el-select v-model="userForm.newRole" placeholder="请选择用户权限">
             <el-option label="user" value="user" />
             <el-option label="admin" value="admin" />
           </el-select>
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { getList, deleteUser, userRegister } from '@/api/user'
+import { getList, deleteUser, userRegister, updateUser } from '@/api/user'
 export default {
   filters: {
     statusFilter(status) {
@@ -78,8 +78,8 @@ export default {
       formLabelWidth: '120px',
       userForm: {
         id: 0,
-        username: '',
-        role: ''
+        newUserName: '',
+        newRole: ''
       },
       tableKey: 0,
       list: null,
@@ -137,15 +137,13 @@ export default {
       console.log(row)
       this.userForm = {
         id: row.id,
-        username: row.username,
-        role: row.role
+        newUserName: row.username,
+        newRole: row.role
       }
       this.dialogFormVisible = true
     },
     handleConfirm() {
-      // TODO: 修改权限
-      const id = 1
-      deleteUser(id).then(response => {
+      updateUser(this.userForm).then(response => {
         this.$message({
           message: '修改权限成功',
           type: 'success'

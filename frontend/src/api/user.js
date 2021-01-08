@@ -80,13 +80,22 @@ export function getList() {
   })
 }
 
+export function updateUser(data) {
+  getRBACSession()
+  return request({
+    url: '/userCrud/update',
+    baseURL: host_RBAC,
+    method: 'post',
+    params: data
+  })
+}
+
 export function deleteUser(uid) {
   getRBACSession()
   return request({
-    url: '/userCrud/delete',
+    url: '/userCrud/delete/' + uid,
     baseURL: host_RBAC,
-    method: 'post',
-    params: { id: uid } // id
+    method: 'get'
   })
 }
 
