@@ -116,33 +116,41 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', {
-        username: 'admin',
-        password: '123456'
-      }).then(() => {
+            username: 'admin',
+            password: '123456'
+          }).then(() => {
             const { username, password } = this.loginForm
-            rbacLogin({ userName: username.trim(), password: password }).then(response => {
-              this.$store.commit('setSession', {name:'rbac', id:response['session']} )
 
-              creditLogin({ userName: username.trim(), password: password }).then(response => {
-                this.$store.commit('setSession', {name:'credit', id:response['session']})
+            rbacLogin({ userName: 'admin', password: '123456' }).then(response => {
+              this.$store.commit('setSession', {name:'rbac', id:response['session']})
 
-                dishLogin({ userName: username.trim(), password: password }).then(response => {
-                  this.$store.commit('setSession', {name:'dish', id:response['session']})
+              getList().then(response => {
+                this.$store.commit('setUserNum', response['length'])
 
-                  console.log(this.$store.state.session)
-                  this.listLoading = false
-                  this.$store.commit('setName', this.loginForm.username)
-                  this.$router.push({ path: this.redirect || '/' })
+                rbacLogin({ userName: username.trim(), password: password }).then(response => {
+                  this.$store.commit('setSession', {name:'rbac', id:response['session']} )
+
+                  creditLogin({ userName: username.trim(), password: password }).then(response => {
+                    this.$store.commit('setSession', {name:'credit', id:response['session']})
+
+                    dishLogin({ userName: username.trim(), password: password }).then(response => {
+                      this.$store.commit('setSession', {name:'dish', id:response['session']})
+
+                      console.log(this.$store.state.session)
+                      this.listLoading = false
+                      this.$store.commit('setName', this.loginForm.username)
+                      this.$router.push({ path: this.redirect || '/' })
+                      this.loading = false
+                    })
+                  })
+                }).catch(error => {
+                  this.$message.error('请输入正确的用户名和密码')
+                  console.log(error)
                   this.loading = false
                 })
               })
             })
-            .catch(error => {
-              console.log(error)
-              this.loading = false
-            })
-          })
-          .catch(error => {
+          }).catch(error => {
             console.log(error)
             this.loading = false
           })

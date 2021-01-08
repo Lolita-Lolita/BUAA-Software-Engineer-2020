@@ -17,6 +17,7 @@ const store = new Vuex.Store({
   state: {
     name: '用户',
     processing: false,
+    userNum: 2,
     session:{
       rbac: '',
       credit: '',
@@ -32,6 +33,9 @@ const store = new Vuex.Store({
     },
     setProcessing(state, processing){
       state.processing = processing
+    },
+    setUserNum(state, num){
+      state.userNum = num;
     }
   }
 })

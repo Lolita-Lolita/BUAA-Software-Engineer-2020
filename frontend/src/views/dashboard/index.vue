@@ -27,7 +27,7 @@
                 <div class="card-panel-text">
                   用户数量
                 </div>
-                <div class="card-panel-num" >2</div>
+                <div class="card-panel-num" >{{ userNum }}</div>
               </div>
             </div>
           </el-col>
@@ -121,6 +121,9 @@ export default {
       } else {
         return '欢迎您，' + this.username + '！今天您恰了吗？'
       }
+    },
+    userNum: function() {
+      return this.$store.state.userNum
     }
   }
 }

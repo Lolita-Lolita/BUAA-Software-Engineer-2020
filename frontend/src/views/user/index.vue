@@ -161,6 +161,7 @@ export default {
           message: '删除用户成功',
           type: 'success'
         })
+        this.$store.commit('setUserNum',this.$store.state.userNum - 1)
         this.fetchData()
       }).catch(error => {
         this.$message.error('删除用户失败')
