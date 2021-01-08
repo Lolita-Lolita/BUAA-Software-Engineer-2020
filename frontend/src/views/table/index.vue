@@ -72,7 +72,7 @@
         :current-page.sync="currentPage"
         background
         layout="total, prev, pager, next"
-        :total="36"
+        :total="total"
         :page-size="20">
       </el-pagination>
     </div>
@@ -158,7 +158,7 @@
       return {
         tableKey: 0,
         list: null,
-        total: 36,
+        total: 0,
         currentPage:0,
         listLoading: true,
         listQuery: {
@@ -200,6 +200,8 @@
         this.listLoading = true
         getFoodList(this.listQuery).then(response => {
           console.log(response)
+          this.total = response.totalElements
+          console.log(this.total)
           this.list= response.content
           this.listLoading = false
         })
