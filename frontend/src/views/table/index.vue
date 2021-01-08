@@ -120,16 +120,16 @@
           <el-input v-model="temp.location" disabled="true"/>
         </el-form-item>
         <el-form-item label="平均评分" prop="lookCredit" >
-          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.averageCredit" disabled show-score></el-rate>
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.averageCredit" disabled ></el-rate>
         </el-form-item>
         <el-form-item label="外表评分" prop="lookCredit" >
-          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.lookCredit" disabled show-score></el-rate>
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.lookCredit" disabled ></el-rate>
         </el-form-item>
         <el-form-item label="香味评分" prop="smellCredit">
-          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.smellCredit" disabled show-score></el-rate>
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.smellCredit" disabled ></el-rate>
         </el-form-item>
         <el-form-item label="味道评分" prop="tasteCredit">
-          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.tasteCredit" disabled show-score></el-rate>
+          <el-rate style="margin:10px 0 10px 0;" v-model="temp2.tasteCredit" disabled ></el-rate>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -207,7 +207,8 @@
         })
       },
       handleFilter() {
-        this.fetchData()
+        this.handleCurrentChange(1)
+        //this.fetchData()
       },
       handleUpdate(row) {
         console.log(row)
@@ -255,7 +256,7 @@
       },
       updateData() {
             const tempData = Object.assign({}, this.temp)
-            const params = {dishID:tempData.id, lookCredit:tempData.lookCredit, smellCredit: tempData.smellCredit, tasteCredit: tempData.smellCredit}
+            const params = {dishID:tempData.id, lookCredit:tempData.lookCredit, smellCredit: tempData.smellCredit, tasteCredit: tempData.tasteCredit}
             setCredit(params).then(response => {
               this.dialogFormVisible = false
               this.$notify({
