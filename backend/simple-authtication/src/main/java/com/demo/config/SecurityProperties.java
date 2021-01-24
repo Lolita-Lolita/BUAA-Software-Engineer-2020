@@ -15,8 +15,18 @@ public @Data class SecurityProperties {
     private boolean autoScan = true;
     private String[] sysPath = new String[0];
     private String[] whiteList = new String[0];
+    private Auth auth = new Auth();
 
     public @Data static class Filter {
         private boolean enable = true;
+    }
+
+    public @Data static class Auth {
+        private Type type = Type.DATABASE;
+        private String address = "localhost:8081";
+    }
+
+    public enum Type {
+        DATABASE, REMOTE;
     }
 }

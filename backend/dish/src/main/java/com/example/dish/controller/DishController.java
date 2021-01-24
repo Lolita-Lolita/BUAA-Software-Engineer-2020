@@ -1,31 +1,22 @@
 package com.example.dish.controller;
 
-import com.demo.config.annotation.Authority;
-import com.demo.entity.User;
 import com.demo.repository.UserRepository;
 import com.example.dish.controller.dto.CreditDTO;
 import com.example.dish.controller.dto.DishDTO;
 import com.example.dish.controller.params.DishSearchParams;
 import com.example.dish.entity.Dish;
 import com.example.dish.service.DishService;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,18 +90,6 @@ public class DishController {
         return ResponseEntity.ok(dishService.save(dish));
     }
 
-
-    @StreamListener(value = "user", condition = "headers['operate'] == 'save'")
-    public void saveUser(User user) {
-        userRepository.save(user);
-        System.out.println(user);
-    }
-
-    @StreamListener(value = "user", condition = "headers['operate'] == 'delete'")
-    public void deleteUser(String user) {
-        userRepository.deleteById(Long.parseLong(user));
-        System.out.println(user);
-    }
 
     @PreAuthorize("hasRole('user') or hasRole('admin')")
     @GetMapping("/credit/{id}")

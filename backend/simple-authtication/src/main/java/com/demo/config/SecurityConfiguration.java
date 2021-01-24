@@ -1,9 +1,18 @@
 package com.demo.config;
 
+import com.demo.repository.UserRepository;
+import com.demo.service.UserService;
+import com.demo.service.database.DataService;
+import com.demo.service.remote.RemoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -20,24 +29,41 @@ import org.springframework.security.web.authentication.Http403ForbiddenEntryPoin
  */
 @Configuration
 @ComponentScan("com.demo.config")
-@EntityScan("com.demo.entity")
-@EnableJpaRepositories("com.demo.repository")
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ConditionalOnProperty(value = "security.filter.enable", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(SecurityProperties.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	private @Autowired UserPermissionDetail userDetail;
+	private @Autowired LoginSuccessHandler login;
+	private @Autowired SecurityProperties properties;
+
+	@EntityScan("com.demo.entity")
+	@EnableJpaRepositories("com.demo.repository")
+	@ConditionalOnMissingBean(UserService.class)
+	@ConditionalOnProperty(value = "security.auth.type", havingValue = "DATABASE", matchIfMissing = true)
+	public static class DataConfiguration {
+
+		public @Bean UserService dataBaseService(@Autowired UserRepository repository) {
+			return new DataService(repository);
+		}
+	}
+
 	@EntityScan("${security.scan-entity}")
 	@EnableJpaRepositories("${security.scan-repositories}")
-	@ConditionalOnProperty(value = "security.auto-scan", havingValue = "true", matchIfMissing = true)
+	@ConditionalOnMissingBean(UserService.class)
+	@ConditionalOnExpression(value = "'${security.auth.type:DATABASE}'.equals('DATABASE') && ${security.auto-scan:true}")
 	public static class EntityClass {
 
 	}
 
-	private @Autowired UserPermissionDetail userDetail;
-	private @Autowired LoginSuccessHandler login;
-	private @Autowired SecurityProperties properties;
+	@ConditionalOnProperty(value = "security.auth.type", havingValue = "REMOTE")
+	@ConditionalOnMissingBean(UserService.class)
+	public @Bean UserService remoteService(@Autowired(required = false) LoadBalancerClient lc, @Autowired SecurityProperties properties) {
+		return new RemoteService(lc, properties);
+	}
+
 
 	/**
 	 * 指定使用自定义的 userDetailsService 还有 PasswordEncoder
