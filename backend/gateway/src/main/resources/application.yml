@@ -12,6 +12,18 @@ spring:
            - Path=/api/dish/**
          filters:
            - StripPrefix=2
+       - id: credit
+         uri: lb://CREDIT
+         predicates:
+           - Path=/api/credit/**
+         filters:
+           - StripPrefix=2
+       - id: rbac
+         uri: lb://RBAC
+         predicates:
+           - Path=/api/userCrud/**
+         filters:
+           - StripPrefix=2
 
 eureka:
   instance:

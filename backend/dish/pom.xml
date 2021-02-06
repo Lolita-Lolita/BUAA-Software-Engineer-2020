@@ -48,16 +48,22 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.9.2</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>io.springfox</groupId>-->
+<!--			<artifactId>springfox-swagger-ui</artifactId>-->
+<!--			<version>2.9.2</version>-->
+<!--		</dependency>-->
+
+<!--		<dependency>-->
+<!--			<groupId>io.springfox</groupId>-->
+<!--			<artifactId>springfox-swagger2</artifactId>-->
+<!--			<version>2.9.2</version>-->
+<!--		</dependency>-->
 
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>knife4j-micro-spring-boot-starter</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 
 	</dependencies>
